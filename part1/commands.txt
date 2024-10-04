@@ -1,0 +1,24 @@
+# https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/
+
+# Cluster with 2 agents
+k3d cluster create -a 2
+
+# Kubectl access control panel
+k3d kubeconfig get k3s-default
+kubectl config use-context k3d-k3s-default
+
+# Stuff
+k3d cluster stop
+k3d cluster start
+k3d cluster delete
+
+To use local image with k3d
+k3d image import <image-name> + imagePullPolicy -> ifNotPresent or Never
+
+# Pods
+# Pod = context for N containers
+kubectl get pods
+
+# Deployment
+# Deployment = what container you want, how they should be running and how many of them should be running
+kubectl get deployments
