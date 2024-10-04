@@ -15,5 +15,16 @@ docker build . -t $SANITIZED_TAG
 docker tag $SANITIZED_TAG:latest deecaad/devopsk8s:$SANITIZED_TAG
 docker push deecaad/devopsk8s:$SANITIZED_TAG
 
-#kubectl create deployment $SANITIZED_TAG --image=deecaad/devopsk8s:$SANITIZED_TAG
-kubectl apply -f ./manifests/deployment.yaml
+# Apply deployment.yaml if it exists
+if [ -f ./manifests/deployment.yaml ]; then
+  kubectl apply -f ./manifests/deployment.yaml
+else
+  echo "Warning: ./manifests/deployment.yaml not found, skipping deployment."
+fi
+
+# Apply service.yaml if it exists
+if [ -f ./manifests/service.yaml ]; then
+  kubectl apply -f ./manifests/service.yaml
+else
+  echo "Warning: ./manifests/service.yaml not found, skipping service."
+fi
