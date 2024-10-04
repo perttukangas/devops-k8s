@@ -1,4 +1,4 @@
-FROM golang:1.23.2-alpine3.20
+FROM golang:1.23.2-alpine3.20 AS builder
 
 WORKDIR /app
 
@@ -9,5 +9,13 @@ RUN go mod download
 COPY . .
 
 RUN go build -o main .
+
+FROM scratch AS runner
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /app/main .
+
+ENV GIN_MODE=release
 
 CMD ["./main"]
