@@ -7,6 +7,9 @@ k3d cluster create -a 2
 k3d kubeconfig get k3s-default
 kubectl config use-context k3d-k3s-default
 
+# Kubectl apply deployment
+kubectl apply -f manifests/deployment.yaml
+
 # Stuff
 k3d cluster stop
 k3d cluster start

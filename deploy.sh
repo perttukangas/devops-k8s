@@ -15,4 +15,5 @@ docker build . -t $SANITIZED_TAG
 docker tag $SANITIZED_TAG:latest deecaad/devopsk8s:$SANITIZED_TAG
 docker push deecaad/devopsk8s:$SANITIZED_TAG
 
-kubectl create deployment $SANITIZED_TAG --image=deecaad/devopsk8s:$SANITIZED_TAG
+#kubectl create deployment $SANITIZED_TAG --image=deecaad/devopsk8s:$SANITIZED_TAG
+kubectl apply -f ./manifests/deployment.yaml
