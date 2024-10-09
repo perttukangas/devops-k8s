@@ -26,3 +26,7 @@ kubectl get pods
 # Deployment
 # Deployment = what container you want, how they should be running and how many of them should be running
 kubectl get deployments
+
+# Service = will take care of serving the application to connections from outside (and also inside!) of the cluster.
+
+# Ingress = Incoming Network Access resource

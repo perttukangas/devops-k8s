@@ -7,24 +7,24 @@ fi
 
 RELATIVE_PATH=$1
 
-cd $RELATIVE_PATH
-
-SANITIZED_TAG=$(echo $RELATIVE_PATH | sed 's|^\./||' | tr '/' '-' | sed 's/-$//')
-
-docker build . -t $SANITIZED_TAG
-docker tag $SANITIZED_TAG:latest deecaad/devopsk8s:$SANITIZED_TAG
-docker push deecaad/devopsk8s:$SANITIZED_TAG
-
-# Apply deployment.yaml if it exists
-if [ -f ./manifests/deployment.yaml ]; then
-  kubectl apply -f ./manifests/deployment.yaml
+if [ -d $RELATIVE_PATH/applications ]; then
+  cd $RELATIVE_PATH/applications
+  for DIR in */ ; do
+    if [ -d "$DIR" ]; then
+      SANITIZED_TAG=$(echo $RELATIVE_PATH$DIR | sed 's|^\./||' | tr '/' '-' | sed 's/-$//')
+      docker build $DIR -t $SANITIZED_TAG
+      docker tag $SANITIZED_TAG:latest deecaad/devopsk8s:$SANITIZED_TAG
+      docker push deecaad/devopsk8s:$SANITIZED_TAG
+    fi
+  done
+  cd ..
 else
-  echo "Warning: ./manifests/deployment.yaml not found, skipping deployment."
+  cd $RELATIVE_PATH
+  SANITIZED_TAG=$(echo $RELATIVE_PATH | sed 's|^\./||' | tr '/' '-' | sed 's/-$//')
+  
+  docker build . -t $SANITIZED_TAG
+  docker tag $SANITIZED_TAG:latest deecaad/devopsk8s:$SANITIZED_TAG
+  docker push deecaad/devopsk8s:$SANITIZED_TAG
 fi
 
-# Apply service.yaml if it exists
-if [ -f ./manifests/service.yaml ]; then
-  kubectl apply -f ./manifests/service.yaml
-else
-  echo "Warning: ./manifests/service.yaml not found, skipping service."
-fi
+kubectl apply -f ./manifests/
