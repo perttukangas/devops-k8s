@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output
+  template:
+    metadata:
+      labels:
+        app: log-output
+    spec:
+      volumes:
+        - name: shared-timestamp
+          emptyDir: {}
+      containers:
+        - name: log-output-generator
+          image: deecaad/devopsk8s:part1-10-log-output-generator
+          volumeMounts:
+            - name: shared-timestamp
+              mountPath: /usr/src/app/files
+        - name: log-output-reader
+          image: deecaad/devopsk8s:part1-10-log-output-reader
+          volumeMounts:
+            - name: shared-timestamp
+              mountPath: /usr/src/app/files
