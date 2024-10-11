@@ -2,3 +2,5 @@ kubectl
 k3d
 k8slens
 kubectx
+
+sops, age
