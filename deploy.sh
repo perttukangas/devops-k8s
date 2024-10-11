@@ -16,6 +16,8 @@ if [ -d $RELATIVE_PATH/applications ]; then
       docker build $DIR -t $SANITIZED_TAG-$VERSION
       docker tag $SANITIZED_TAG-$VERSION deecaad/devopsk8s:$SANITIZED_TAG-$VERSION
       docker push deecaad/devopsk8s:$SANITIZED_TAG-$VERSION
+
+      find ../k8s/ -type f -name "*.yaml" -exec sed -i "s|\(image: deecaad/devopsk8s:$SANITIZED_TAG\).*|\1-$VERSION|g" {} +
     fi
   done
   cd ..
@@ -27,7 +29,7 @@ else
   docker tag $SANITIZED_TAG-$VERSION deecaad/devopsk8s:$SANITIZED_TAG-$VERSION
   docker push deecaad/devopsk8s:$SANITIZED_TAG-$VERSION
 
-  find . -type f -name "*.yaml" -exec sed -i "s|\(image: deecaad/devopsk8s:\).*|\1$SANITIZED_TAG-$VERSION|g" {} +
+  find . -type f -name "*.yaml" -exec sed -i "s|\(image: deecaad/devopsk8s:$SANITIZED_TAG\).*|\1-$VERSION|g" {} +
 fi
 
 if [ -d ./k8s/volumes ]; then
@@ -36,6 +38,10 @@ fi
 
 if [ -d ./k8s/manifests ]; then
   kubectl apply -f ./k8s/manifests/
+fi
+
+if [ -d ./k8s/middleware ]; then
+  kubectl apply -f ./k8s/middleware/
 fi
 
 if [ -d ./manifests ]; then

@@ -20,3 +20,7 @@ fi
 if [ -d ./k8s/volumes ]; then
   kubectl delete -f ./k8s/volumes/
 fi
+
+if [ -d ./k8s/middleware ]; then
+  kubectl delete -f ./k8s/middleware/
+fi

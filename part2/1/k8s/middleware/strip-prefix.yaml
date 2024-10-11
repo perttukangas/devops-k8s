@@ -1,0 +1,9 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: prefix-strip
+spec:
+  stripPrefix:
+    prefixes:
+      - '/pingpong'
+    forceSlash: false
