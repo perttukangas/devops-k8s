@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      volumes:
+        - name: shared-files
+          persistentVolumeClaim:
+            claimName: project-pvc
+      containers:
+        - name: project
+          image: deecaad/devopsk8s:part1-13-4
+          env:
+            - name: PORT
+              value: '8085'
+          volumeMounts:
+            - name: shared-files
+              mountPath: /usr/src/app/ui/images
