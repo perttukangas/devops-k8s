@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: todo-namespace
+  name: todo-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-frontend
+  template:
+    metadata:
+      labels:
+        app: todo-frontend
+    spec:
+      volumes:
+        - name: shared-files
+          persistentVolumeClaim:
+            claimName: todo-frontend-pvc
+      containers:
+        - name: todo-frontend
+          image: deecaad/devopsk8s:part2-4-todo-frontend-1
+          volumeMounts:
+            - name: shared-files
+              mountPath: /usr/src/app/dist/images

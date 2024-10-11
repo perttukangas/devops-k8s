@@ -32,16 +32,20 @@ else
   find . -type f -name "*.yaml" -exec sed -i "s|\(image: deecaad/devopsk8s:$SANITIZED_TAG\).*|\1-$VERSION|g" {} +
 fi
 
+if [ -d ./k8s/namespaces ]; then
+  kubectl apply -f ./k8s/namespaces/
+fi
+
+if [ -d ./k8s/middleware ]; then
+  kubectl apply -f ./k8s/middleware/
+fi
+
 if [ -d ./k8s/volumes ]; then
   kubectl apply -f ./k8s/volumes/
 fi
 
 if [ -d ./k8s/manifests ]; then
   kubectl apply -f ./k8s/manifests/
-fi
-
-if [ -d ./k8s/middleware ]; then
-  kubectl apply -f ./k8s/middleware/
 fi
 
 if [ -d ./manifests ]; then
