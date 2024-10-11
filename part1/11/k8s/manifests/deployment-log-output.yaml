@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output
+  template:
+    metadata:
+      labels:
+        app: log-output
+    spec:
+      volumes:
+        - name: shared-time-ping
+          persistentVolumeClaim:
+            claimName: multi-application-pvc
+      containers:
+        - name: log-output-generator
+          image: deecaad/devopsk8s:part1-11-log-output-generator
+          volumeMounts:
+            - name: shared-time-ping
+              mountPath: /usr/src/app/files
+        - name: log-output-reader
+          image: deecaad/devopsk8s:part1-11-log-output-reader
+          volumeMounts:
+            - name: shared-time-ping
+              mountPath: /usr/src/app/files

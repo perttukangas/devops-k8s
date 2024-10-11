@@ -27,4 +27,14 @@ else
   docker push deecaad/devopsk8s:$SANITIZED_TAG
 fi
 
-kubectl apply -f ./manifests/
+if [ -d ./k8s/volumes ]; then
+  kubectl apply -f ./k8s/volumes/
+fi
+
+if [ -d ./k8s/manifests ]; then
+  kubectl apply -f ./k8s/manifests/
+fi
+
+if [ -d ./manifests ]; then
+  kubectl apply -f ./manifests/
+fi
