@@ -7,11 +7,12 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func fetchImage() {
-	filePath := "/usr/src/app/ui/images/image.jpg"
+	filePath := "/usr/src/app/dist/images/image.jpg"
 	fileInfo, err := os.Stat(filePath)
 	if err == nil {
 		if time.Since(fileInfo.ModTime()) < 60*time.Minute {
@@ -54,7 +55,7 @@ func main() {
 	go func() {
 		for {
 			fetchImage()
-			fileInfo, err := os.Stat("/usr/src/app/ui/images/image.jpg")
+			fileInfo, err := os.Stat("/usr/src/app/dist/images/image.jpg")
 			if err == nil {
 				timeSinceMod := time.Since(fileInfo.ModTime())
 				if timeSinceMod < 60*time.Minute {
@@ -71,6 +72,10 @@ func main() {
 
 	r := gin.Default()
 
+	fmt.Println("Init cors...")
+	r.Use(cors.Default())
+
+	fmt.Println("Init static...")
 	r.Static("/", "./dist")
 
 	fmt.Printf("Server started on port %v\n", port)

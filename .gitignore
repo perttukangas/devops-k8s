@@ -20,6 +20,7 @@ nbactions.xml
 
 # Node
 node_modules/
+dist/
 
 # Secrets
 .env
