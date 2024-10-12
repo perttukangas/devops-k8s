@@ -40,6 +40,10 @@ if [ -f ./k8s/secrets/secret.yaml ]; then
   kubectl apply -f ./k8s/secrets/secret.yaml
 fi
 
+if [ -d ./k8s/crons ]; then
+  kubectl apply -f ./k8s/crons/
+fi
+
 if [ -d ./k8s/volumes ]; then
   kubectl apply -f ./k8s/volumes/
 fi

@@ -21,6 +21,10 @@ if [ -d ./k8s/volumes ]; then
   kubectl delete -f ./k8s/volumes/
 fi
 
+if [ -d ./k8s/crons ]; then
+  kubectl delete -f ./k8s/crons/
+fi
+
 if [ -f ./k8s/secrets/secret.yaml ]; then
   kubectl delete -f ./k8s/secrets/secret.yaml
 fi
