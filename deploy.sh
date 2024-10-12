@@ -36,8 +36,8 @@ if [ -d ./k8s/namespaces ]; then
   kubectl apply -f ./k8s/namespaces/
 fi
 
-if [ -d ./k8s/middleware ]; then
-  kubectl apply -f ./k8s/middleware/
+if [ -f ./k8s/secrets/secret.yaml ]; then
+  kubectl apply -f ./k8s/secrets/secret.yaml
 fi
 
 if [ -d ./k8s/volumes ]; then

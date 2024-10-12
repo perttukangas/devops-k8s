@@ -24,3 +24,5 @@ dist/
 
 # Secrets
 .env
+secret.yaml
+key.txt
