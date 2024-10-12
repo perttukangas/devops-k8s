@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: todo-namespace
+  name: todo-generator
+spec:
+  schedule: '38 * * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: todo-generator
+              image: deecaad/devopsk8s:part2-10-todo-generator-1
+          restartPolicy: OnFailure
