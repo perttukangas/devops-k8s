@@ -1,0 +1,13 @@
+gcloud config set project dwk-gke-perttu
+
+gcloud container clusters create dwk-cluster --zone=europe-north1-b --cluster-version=1.29
+
+gcloud container clusters get-credentials dwk-cluster --zone=europe-north1-b
+
+gcloud container clusters delete dwk-cluster --zone=europe-north1-b
+
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+helm install traefik traefik/traefik --namespace kube-system
+
+kubectl get svc -n kube-system -l app.kubernetes.io/name=traefik

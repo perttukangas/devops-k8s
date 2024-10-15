@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: myapp-namespace
+  name: log-output-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: log-output
+  ports:
+    - port: 2347
+      protocol: TCP
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: myapp-namespace
+  name: log-output
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output
+  template:
+    metadata:
+      labels:
+        app: log-output
+    spec:
+      containers:
+        - name: log-output
+          image: deecaad/devopsk8s:part3-1-log-output-1
+          env:
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: information-configmap
+                  key: MESSAGE
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: information-configmap
+            items:
+              - key: information.txt
+                path: information.txt

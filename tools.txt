@@ -4,3 +4,4 @@ k8slens
 kubectx, kubens
 sops, age
 helm, loki, prometheus, grafana
+google-cloud-sdk, google-cloud-cli
