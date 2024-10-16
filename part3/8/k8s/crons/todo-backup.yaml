@@ -3,8 +3,8 @@ kind: CronJob
 metadata:
   namespace: todo-namespace
   name: todo-backup
-  spec:
-    schedule: '0 0 * * *'
+spec:
+  schedule: '0 0 * * *'
   jobTemplate:
     spec:
       template:
