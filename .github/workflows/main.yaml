@@ -8,6 +8,7 @@ env:
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
   BRANCH: ${{ github.ref_name }}
+  NAMESPACE: ${{ github.ref_name == 'main' && 'default' || github.ref_name }}
 
 jobs:
   build-publish-deploy:
@@ -16,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./part3/3
+        working-directory: ./part3/4
 
     steps:
       - name: Checkout
@@ -59,9 +60,15 @@ jobs:
       - name: Deploy
         run: |-
           cd k8s
+
+          kubectl create namespace $NAMESPACE || true
+          kubectl config set-context --current --namespace=$NAMESPACE
+          kustomize edit set namespace $NAMESPACE
+
           kustomize edit set image PROJECT/G_IMAGE=gcr.io/$PROJECT_ID/todo-generator:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/B_IMAGE=gcr.io/$PROJECT_ID/todo-backend:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/F_IMAGE=gcr.io/$PROJECT_ID/todo-frontend:$BRANCH-$GITHUB_SHA
+
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment -n todo-namespace
-          kubectl get services -o wide
+          kubectl rollout status deployment -n $NAMESPACE
+          kubectl get services -n $NAMESPACE -o wide
