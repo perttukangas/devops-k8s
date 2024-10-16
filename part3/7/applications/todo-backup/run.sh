@@ -7,9 +7,8 @@ if [[ -z "$POSTGRES_DB" || -z "$POSTGRES_USER" || -z "$POSTGRES_HOST" || -z "$PO
 fi
 
 TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-pg_dump -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER" -d "$POSTGRES_DB" > "/backup/todo_backup_$TIMESTAMP.sql"
+pg_dump -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER" -d "$POSTGRES_DB" > "./todo_backup_$TIMESTAMP.sql"
 
-# Check if the dump was successful
 if [[ $? -eq 0 ]]; then
   echo "Database backup successful."
 else
