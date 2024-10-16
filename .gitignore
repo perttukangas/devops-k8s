@@ -26,3 +26,4 @@ dist/
 .env
 secret.yaml
 key.txt
+sa-private-key.json
