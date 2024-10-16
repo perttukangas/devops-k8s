@@ -65,6 +65,8 @@ jobs:
           kubectl config set-context --current --namespace=$NAMESPACE
           kustomize edit set namespace $NAMESPACE
 
+          sed -i "s/traefik.ingress.kubernetes.io\/router.middlewares:.*/traefik.ingress.kubernetes.io\/router.middlewares: $NAMESPACE-prefix-strip@kubernetescrd/" manifests/ingress.yaml
+
           kustomize edit set image PROJECT/G_IMAGE=gcr.io/$PROJECT_ID/todo-generator:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/B_IMAGE=gcr.io/$PROJECT_ID/todo-backend:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/F_IMAGE=gcr.io/$PROJECT_ID/todo-frontend:$BRANCH-$GITHUB_SHA
