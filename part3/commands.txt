@@ -11,3 +11,21 @@ helm repo update
 helm install traefik traefik/traefik --namespace kube-system
 
 kubectl get svc -n kube-system -l app.kubernetes.io/name=traefik
+
+gcloud projects add-iam-policy-binding dwk-gke-perttu \
+    --member="serviceAccount:github-actions@dwk-gke-perttu.iam.gserviceaccount.com" \
+    --role="roles/container.serviceAgent"
+
+gcloud projects add-iam-policy-binding dwk-gke-perttu \
+    --member="serviceAccount:github-actions@dwk-gke-perttu.iam.gserviceaccount.com" \
+    --role="roles/storage.admin"
+
+gcloud projects add-iam-policy-binding dwk-gke-perttu \
+    --member="serviceAccount:github-actions@dwk-gke-perttu.iam.gserviceaccount.com" \
+    --role="roles/artifactregistry.admin"
+
+gcloud projects add-iam-policy-binding dwk-gke-perttu \
+    --member="serviceAccount:github-actions@dwk-gke-perttu.iam.gserviceaccount.com" \
+    --role="roles/artifactregistry.createOnPushRepoAdmin"
+
+gcloud iam service-accounts keys create ./sa-private-key.json --iam-account=github-actions@dwk-gke-perttu.iam.gserviceaccount.com
