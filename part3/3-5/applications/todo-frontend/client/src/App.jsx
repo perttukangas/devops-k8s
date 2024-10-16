@@ -44,7 +44,7 @@ const App = () => {
 
   return (
     <>
-      <h1>Hello from a static page</h1>
+      <h1>Hello from a page</h1>
       <img
         src='/images/image.jpg'
         alt='Image description'
