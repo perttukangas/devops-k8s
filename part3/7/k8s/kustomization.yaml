@@ -18,3 +18,4 @@ resources:
   - manifests/todo-postgres.yaml
   - namespaces/namespace.yaml
   - secrets/secret.yaml
+  - secrets/google-secret.yaml

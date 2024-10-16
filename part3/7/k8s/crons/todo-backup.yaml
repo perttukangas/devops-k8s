@@ -4,7 +4,7 @@ metadata:
   namespace: todo-namespace
   name: todo-backup
 spec:
-  schedule: '44 * * * *'
+  schedule: '30 * * * *'
   jobTemplate:
     spec:
       template:
@@ -38,4 +38,9 @@ spec:
                     secretKeyRef:
                       name: postgres-secret
                       key: POSTGRES_PASSWORD
+                - name: GCLOUD_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: google-secret
+                      key: GCLOUD_TOKEN
           restartPolicy: Never

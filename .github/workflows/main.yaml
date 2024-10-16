@@ -56,6 +56,19 @@ jobs:
       - name: Echo TODO_PG_SECRET to secrets/secret.yaml
         run: echo "${{ secrets.TODO_PG_SECRET }}" > ./k8s/secrets/secret.yaml
 
+      - name: Echo GCLOUD_TOKEN to secrets/google-secret.yaml
+        shell: bash
+        run: |-
+          TOKEN=$(gcloud auth print-access-token)
+          echo "::add-mask::$TOKEN"
+          echo "apiVersion: v1
+          kind: Secret
+          metadata:
+            namespace: todo-namespace
+            name: google-secret
+          data:
+            GCLOUD_TOKEN: $(echo -n $TOKEN | base64)" > ./k8s/secrets/google-secret.yaml
+
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2.1.0
 
