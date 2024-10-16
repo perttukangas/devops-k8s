@@ -25,5 +25,6 @@ dist/
 # Secrets
 .env
 secret.yaml
+google-secret.yaml
 key.txt
 sa-private-key.json
