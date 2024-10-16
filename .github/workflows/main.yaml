@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./part3/3-5
+        working-directory: ./part3/7
 
     steps:
       - name: Checkout
@@ -44,12 +44,14 @@ jobs:
           docker build --tag "gcr.io/$PROJECT_ID/todo-generator:$BRANCH-$GITHUB_SHA" ./applications/todo-generator
           docker build --tag "gcr.io/$PROJECT_ID/todo-backend:$BRANCH-$GITHUB_SHA" ./applications/todo-backend
           docker build --tag "gcr.io/$PROJECT_ID/todo-frontend:$BRANCH-$GITHUB_SHA" ./applications/todo-frontend
+          docker build --tag "gcr.io/$PROJECT_ID/todo-backup:$BRANCH-$GITHUB_SHA" ./applications/todo-backup
 
       - name: Publish
         run: |-
           docker push "gcr.io/$PROJECT_ID/todo-generator:$BRANCH-$GITHUB_SHA"
           docker push "gcr.io/$PROJECT_ID/todo-backend:$BRANCH-$GITHUB_SHA"
           docker push "gcr.io/$PROJECT_ID/todo-frontend:$BRANCH-$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/todo-backup:$BRANCH-$GITHUB_SHA"
 
       - name: Echo TODO_PG_SECRET to secrets/secret.yaml
         run: echo "${{ secrets.TODO_PG_SECRET }}" > ./k8s/secrets/secret.yaml
@@ -70,6 +72,7 @@ jobs:
           kustomize edit set image PROJECT/G_IMAGE=gcr.io/$PROJECT_ID/todo-generator:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/B_IMAGE=gcr.io/$PROJECT_ID/todo-backend:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/F_IMAGE=gcr.io/$PROJECT_ID/todo-frontend:$BRANCH-$GITHUB_SHA
+          kustomize edit set image PROJECT/BC_IMAGE=gcr.io/$PROJECT_ID/todo-backup:$BRANCH-$GITHUB_SHA
 
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment -n $NAMESPACE
