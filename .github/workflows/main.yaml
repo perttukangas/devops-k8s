@@ -58,10 +58,11 @@ jobs:
 
       - name: Deploy
         run: |-
+          cd k8s
           kustomize edit set image PROJECT/G_IMAGE=gcr.io/$PROJECT_ID/todo-generator:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/B_IMAGE=gcr.io/$PROJECT_ID/todo-backend:$BRANCH-$GITHUB_SHA
           kustomize edit set image PROJECT/F_IMAGE=gcr.io/$PROJECT_ID/todo-frontend:$BRANCH-$GITHUB_SHA
-          kustomize build ./k8s | kubectl apply -f -
+          kustomize build . | kubectl apply -f -
           kubectl rollout status deployment todo-backend
           kubectl rollout status deployment $todo-frontend
           kubectl get services -o wide
