@@ -6,8 +6,8 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
-  BRANCH: ${{ github.ref_name }}
-  NAMESPACE: ${{ github.ref_name == 'main' && 'default' || github.ref_name }}
+  BRANCH: ${{ github.event.ref }}
+  NAMESPACE: ${{ github.event.ref == 'main' && 'default' || github.event.ref }}
 
 jobs:
   delete-environment:
@@ -34,8 +34,12 @@ jobs:
 
       - name: Delete Kubernetes resources
         run: |-
-          kubectl delete all --all -n $NAMESPACE
-          kubectl delete pvc --all -n $NAMESPACE
-          kubectl delete configmap --all -n $NAMESPACE
-          kubectl delete secret --all -n $NAMESPACE
-          kubectl delete namespace $NAMESPACE
+          if [ "$NAMESPACE" != "default" ]; then
+            kubectl delete all --all -n $NAMESPACE
+            kubectl delete pvc --all -n $NAMESPACE
+            kubectl delete configmap --all -n $NAMESPACE
+            kubectl delete secret --all -n $NAMESPACE
+            kubectl delete namespace $NAMESPACE
+          else
+            echo "Skipping deletion as the namespace is 'default'"
+          fi
