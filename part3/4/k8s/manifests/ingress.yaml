@@ -16,7 +16,7 @@ metadata:
   name: todo-ingress
   annotations:
     kubernetes.io/ingress.class: 'traefik'
-    traefik.ingress.kubernetes.io/router.middlewares: todo-namespace-prefix-strip@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: default-prefix-strip@kubernetescrd
 spec:
   rules:
     - http:
