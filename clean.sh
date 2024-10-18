@@ -9,26 +9,6 @@ RELATIVE_PATH=$1
 
 cd $RELATIVE_PATH
 
-if [ -d ./manifests ]; then
-  kubectl delete -f ./manifests/
-fi
-
-if [ -d ./k8s/manifests ]; then
-  kubectl delete -f ./k8s/manifests/
-fi
-
-if [ -d ./k8s/volumes ]; then
-  kubectl delete -f ./k8s/volumes/
-fi
-
-if [ -d ./k8s/crons ]; then
-  kubectl delete -f ./k8s/crons/
-fi
-
-if [ -f ./k8s/secrets/secret.yaml ]; then
-  kubectl delete -f ./k8s/secrets/secret.yaml
-fi
-
-if [ -d ./k8s/namespaces ]; then
-  kubectl delete -f ./k8s/namespaces/
+if [ -d ./k8s ]; then
+  kubectl delete -k ./k8s/
 fi

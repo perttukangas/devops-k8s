@@ -1,0 +1,2 @@
+kubectl describe deployment <depl>
+kubectl rollout undo deployment <depl> --to-revision=x
