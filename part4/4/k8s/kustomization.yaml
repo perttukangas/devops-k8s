@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+  - name: PROJECT/G_IMAGE
+    newName: deecaad/devopsk8s:part4-4-todo-generator-13
+  - name: PROJECT/B_IMAGE
+    newName: deecaad/devopsk8s:part4-4-todo-backend-13
+  - name: PROJECT/F_IMAGE
+    newName: deecaad/devopsk8s:part4-4-todo-frontend-13
+  - name: PROJECT/BC_IMAGE
+    newName: deecaad/devopsk8s:part4-4-todo-backup-13
+resources:
+  - analysis/cpu-analysis.yaml
+  - crons/todo-backup.yaml
+  - crons/todo-generator.yaml
+  - manifests/ingress.yaml
+  - manifests/todo-backend.yaml
+  - manifests/todo-frontend.yaml
+  - manifests/todo-postgres.yaml
+  - namespaces/namespace.yaml
+  - secrets/secret.yaml
+  #- secrets/google-secret.yaml
