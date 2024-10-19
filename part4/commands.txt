@@ -3,3 +3,8 @@ kubectl rollout undo deployment <depl> --to-revision=x
 
 kubectl create namespace argo-rollouts
 kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+kubectl argo rollouts get rollout <depl> --watch
+
+helm install --set auth.enabled=false my-nats oci://registry-1.docker.io/bitnamicharts/nats
+helm upgrade --set metrics.enabled=true,auth.enabled=false my-nats oci://registry-1.docker.io/bitnamicharts/nats
+kubectl port-forward --namespace default svc/my-nats-metrics 7777:7777

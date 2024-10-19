@@ -26,5 +26,6 @@ dist/
 .env
 secret.yaml
 google-secret.yaml
+discord-secret.yaml
 key.txt
 sa-private-key.json

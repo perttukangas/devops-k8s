@@ -6,3 +6,5 @@ sops, age
 helm, loki, prometheus, grafana
 google-cloud-sdk, google-cloud-cli
 kustomize
+argo-rollouts
+nats, bitnami
