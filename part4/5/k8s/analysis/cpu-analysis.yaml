@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  namespace: todo-namespace
+  name: cpu-analysis
+spec:
+  metrics:
+    - name: cpu-analysis
+      initialDelay: 10m
+      successCondition: result[0] < 20
+      provider:
+        prometheus:
+          address: http://kube-prometheus-stack-1728-prometheus.prometheus.svc.cluster.local:9090
+          query: |
+            sum(rate(container_cpu_usage_seconds_total{namespace="todo-namespace"}[1m])) * 100
