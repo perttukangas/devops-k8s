@@ -32,6 +32,9 @@ func main() {
 	defer nc.Close()
 
 	_, err := nc.QueueSubscribe("todo-updates", "todo-group", func(m *nats.Msg) {
+
+		fmt.Println("Got message")
+
 		webhookURL := os.Getenv("DISCORD_WEBHOOK")
 		if webhookURL == "" {
 			fmt.Println("DISCORD_WEBHOOK environment variable is not set.")
@@ -42,7 +45,7 @@ func main() {
 		payload := fmt.Sprintf(`{"content": "%s"}`, message)
 
 		if os.Getenv("PRODUCTION") != "true" {
-			fmt.Print(payload)
+			fmt.Printf("Received a todo update: %s", string(m.Data))
 			return
 		}
 
