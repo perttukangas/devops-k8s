@@ -2,9 +2,10 @@ name: Build and publish application
 
 on:
   push:
+    branches: main
 
 env:
-  BUILD: ${{ startsWith(github.ref, 'refs/tags/') && 'prod' || 'staging' }}
+  BUILD: ${{ contains(github.event.head_commit.message, '#prod') && 'prod' || 'staging' }}
 
 jobs:
   build-publish:
@@ -59,4 +60,3 @@ jobs:
         with:
           add: './part4/8/k8s/overlays/${{ env.BUILD }}/kustomization.yaml'
           message: New version released ${{ env.BUILD }} ${{ github.sha }}
-          push: origin main --force
