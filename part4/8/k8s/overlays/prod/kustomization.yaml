@@ -3,27 +3,32 @@ kind: Kustomization
 namespace: todo-namespace-prod
 
 images:
-  - name: PROJECT/G_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-generator-prod-1
-  - name: PROJECT/B_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-backend-prod-1
-  - name: PROJECT/F_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-frontend-prod-1
-  - name: PROJECT/BC_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-backup-prod-1
-  - name: PROJECT/BD_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-broadcaster-prod-1
+- name: PROJECT/BC_IMAGE
+  newName: deecaad/devopsk8s
+  newTag: todo-backup-prod-bc94234c348dd0bfe0e08b7db9d59cf219808332
+- name: PROJECT/BD_IMAGE
+  newName: deecaad/devopsk8s
+  newTag: todo-broadcaster-prod-bc94234c348dd0bfe0e08b7db9d59cf219808332
+- name: PROJECT/B_IMAGE
+  newName: deecaad/devopsk8s
+  newTag: todo-backend-prod-bc94234c348dd0bfe0e08b7db9d59cf219808332
+- name: PROJECT/F_IMAGE
+  newName: deecaad/devopsk8s
+  newTag: todo-frontend-prod-bc94234c348dd0bfe0e08b7db9d59cf219808332
+- name: PROJECT/G_IMAGE
+  newName: deecaad/devopsk8s
+  newTag: todo-generator-prod-bc94234c348dd0bfe0e08b7db9d59cf219808332
 
 resources:
-  - ./../../base
-  - ./manifests/configmap.yaml
+- ./../../base
+- ./manifests/configmap.yaml
 
 patchesJson6902:
-  - target:
-      version: v1
-      kind: Ingress
-      name: todo-ingress
-    patch: |-
-      - op: add
-        path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
-        value: todo-namespace-prod-prefix-strip@kubernetescrd
+- patch: |-
+    - op: add
+      path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
+      value: todo-namespace-prod-prefix-strip@kubernetescrd
+  target:
+    kind: Ingress
+    name: todo-ingress
+    version: v1
