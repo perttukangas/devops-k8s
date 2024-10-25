@@ -18,7 +18,7 @@ metadata:
   namespace: myapp-namespace
   name: log-output
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: log-output
