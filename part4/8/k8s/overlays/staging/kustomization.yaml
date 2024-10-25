@@ -5,19 +5,19 @@ namespace: todo-namespace-staging
 images:
 - name: PROJECT/BC_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-backup-staging-91dc6150eec7adb30a1c86446f732d0199ea0db6
+  newTag: todo-backup-staging-8ba3d4091a0e603e718640a76235c3c247f6a305
 - name: PROJECT/BD_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-broadcaster-staging-91dc6150eec7adb30a1c86446f732d0199ea0db6
+  newTag: todo-broadcaster-staging-8ba3d4091a0e603e718640a76235c3c247f6a305
 - name: PROJECT/B_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-backend-staging-91dc6150eec7adb30a1c86446f732d0199ea0db6
+  newTag: todo-backend-staging-8ba3d4091a0e603e718640a76235c3c247f6a305
 - name: PROJECT/F_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-frontend-staging-91dc6150eec7adb30a1c86446f732d0199ea0db6
+  newTag: todo-frontend-staging-8ba3d4091a0e603e718640a76235c3c247f6a305
 - name: PROJECT/G_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-generator-staging-91dc6150eec7adb30a1c86446f732d0199ea0db6
+  newTag: todo-generator-staging-8ba3d4091a0e603e718640a76235c3c247f6a305
 
 resources:
 - ./../../base
