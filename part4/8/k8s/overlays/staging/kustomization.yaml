@@ -3,32 +3,48 @@ kind: Kustomization
 namespace: todo-namespace-staging
 
 images:
-- name: PROJECT/BC_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-backup-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
-- name: PROJECT/BD_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-broadcaster-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
-- name: PROJECT/B_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-backend-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
-- name: PROJECT/F_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-frontend-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
-- name: PROJECT/G_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-generator-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
+  - name: PROJECT/BC_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-backup-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
+  - name: PROJECT/BD_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-broadcaster-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
+  - name: PROJECT/B_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-backend-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
+  - name: PROJECT/F_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-frontend-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
+  - name: PROJECT/G_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-generator-staging-c61527f0dc4a9eb01935785c4e376f1241f92a8a
 
 resources:
-- ./../../base
-- ./manifests/configmap.yaml
+  - ./../../base
+  - ./manifests/configmap.yaml
 
 patchesJson6902:
-- patch: |-
-    - op: add
-      path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
-      value: todo-namespace-staging-prefix-strip@kubernetescrd
-  target:
-    kind: Ingress
-    name: todo-ingress
-    version: v1
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
+        value: todo-namespace-staging-prefix-strip@kubernetescrd
+    target:
+      kind: Ingress
+      name: todo-ingress
+      version: v1
+  - patch: |-
+      - op: add
+        path: /spec/storageClassName
+        value: todo-frontend-storage-staging
+    target:
+      kind: PersistentVolume
+      name: todo-frontend-pv
+      version: v1
+  - patch: |-
+      - op: add
+        path: /spec/storageClassName
+        value: todo-frontend-storage-staging
+    target:
+      kind: PersistentVolumeClaim
+      name: todo-frontend-pvc
+      version: v1
