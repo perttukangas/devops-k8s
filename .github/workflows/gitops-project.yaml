@@ -46,7 +46,7 @@ jobs:
 
       - name: Use right image
         run: |-
-          cd k8s
+          cd k8s/overlays/$BUILD
 
           kustomize edit set image PROJECT/G_IMAGE=deecaad/devopsk8s:todo-generator-$BUILD-$GITHUB_SHA
           kustomize edit set image PROJECT/B_IMAGE=deecaad/devopsk8s:todo-backend-$BUILD-$GITHUB_SHA
