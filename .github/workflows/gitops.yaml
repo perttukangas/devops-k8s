@@ -1,0 +1,52 @@
+name: Build and publish application
+
+on:
+  push:
+
+env:
+  BRANCH: ${{ github.ref_name }}
+
+jobs:
+  build-publish:
+    name: Build, Push, Release
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./part4/7
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        run: |-
+          docker build --tag "deecaad/devopsk8s:log-output-$BRANCH-$GITHUB_SHA" ./applications/log-output
+          docker build --tag "deecaad/devopsk8s:ping-pong-$BRANCH-$GITHUB_SHA" ./applications/ping-pong
+
+      - name: Publish
+        run: |-
+          docker push "deecaad/devopsk8s:log-output-$BRANCH-$GITHUB_SHA"
+          docker push "deecaad/devopsk8s:ping-pong-$BRANCH-$GITHUB_SHA"
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      - name: Use right image
+        run: |-
+          cd k8s
+
+          kustomize edit set image PROJECT/L_IMAGE=deecaad/devopsk8s:log-output-$BRANCH-$GITHUB_SHA
+          kustomize edit set image PROJECT/P_IMAGE=deecaad/devopsk8s:ping-pong-$BRANCH-$GITHUB_SHA
+
+      - name: commit kustomization.yaml to GitHub
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'kustomization.yaml'
+          message: New version released ${{ github.sha }}
