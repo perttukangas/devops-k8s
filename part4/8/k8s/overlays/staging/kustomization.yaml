@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: todo-namespace-staging
+
+images:
+  - name: PROJECT/G_IMAGE
+    newName: deecaad/devopsk8s:part4-8-todo-generator-staging-1
+  - name: PROJECT/B_IMAGE
+    newName: deecaad/devopsk8s:part4-8-todo-backend-staging-1
+  - name: PROJECT/F_IMAGE
+    newName: deecaad/devopsk8s:part4-8-todo-frontend-staging-1
+  - name: PROJECT/BC_IMAGE
+    newName: deecaad/devopsk8s:part4-8-todo-backup-staging-1
+  - name: PROJECT/BD_IMAGE
+    newName: deecaad/devopsk8s:part4-8-todo-broadcaster-staging-1
+
+resources:
+  - ./../../base
+  - ./manifests/configmap.yaml
+
+patchesJson6902:
+  - target:
+      version: v1
+      kind: Ingress
+      name: todo-ingress
+    patch: |-
+      - op: add
+        path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
+        value: todo-namespace-staging-prefix-strip@kubernetescrd

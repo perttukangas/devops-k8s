@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: todo-namespace
+  name: todo-broadcaster
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todo-broadcaster
+  template:
+    metadata:
+      labels:
+        app: todo-broadcaster
+    spec:
+      containers:
+        - name: todo-broadcaster
+          image: PROJECT/BD_IMAGE
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '100m'
+          env:
+            - name: DISCORD_WEBHOOK
+              valueFrom:
+                secretKeyRef:
+                  name: discord-secret
+                  key: DISCORD_WEBHOOK
+            - name: NATS_URL
+              value: nats://my-nats.default.svc.cluster.local:4222
+            - name: PRODUCTION
+              valueFrom:
+                configMapKeyRef:
+                  name: build-configmap
+                  key: PRODUCTION
