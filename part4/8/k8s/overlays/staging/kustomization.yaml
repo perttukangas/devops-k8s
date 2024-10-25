@@ -25,7 +25,7 @@ resources:
 
 patchesJson6902:
   - patch: |-
-      - op: add
+      - op: replace
         path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
         value: todo-namespace-staging-prefix-strip@kubernetescrd
     target:
@@ -33,7 +33,7 @@ patchesJson6902:
       name: todo-ingress
       version: v1
   - patch: |-
-      - op: add
+      - op: replace
         path: /spec/storageClassName
         value: todo-frontend-storage-staging
     target:
@@ -41,7 +41,7 @@ patchesJson6902:
       name: todo-frontend-pv
       version: v1
   - patch: |-
-      - op: add
+      - op: replace
         path: /spec/storageClassName
         value: todo-frontend-storage-staging
     target:
