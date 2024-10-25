@@ -2,6 +2,7 @@ name: Build and publish application
 
 on:
   push:
+    branches: main
 
 env:
   BRANCH: ${{ github.ref_name }}
