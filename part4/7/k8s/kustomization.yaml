@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+  - name: PROJECT/L_IMAGE
+    newName: deecaad/devopsk8s:part4-7-log-output-1
+  - name: PROJECT/P_IMAGE
+    newName: deecaad/devopsk8s:part4-7-ping-pong-1
+resources:
+  - manifests/configmap.yaml
+  - manifests/ingress.yaml
+  - manifests/log-output.yaml
+  - manifests/ping-pong.yaml
+  - manifests/postgres.yaml
+  - namespaces/namespace.yaml
+  - secrets/secret.yaml

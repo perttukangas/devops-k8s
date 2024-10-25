@@ -8,3 +8,7 @@ kubectl argo rollouts get rollout <depl> --watch
 helm install --set auth.enabled=false my-nats oci://registry-1.docker.io/bitnamicharts/nats
 helm upgrade --set metrics.enabled=true,auth.enabled=false my-nats oci://registry-1.docker.io/bitnamicharts/nats
 kubectl port-forward --namespace default svc/my-nats-metrics 7777:7777
+
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl port-forward svc/argocd-server -n argocd 8080:443

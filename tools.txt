@@ -8,3 +8,4 @@ google-cloud-sdk, google-cloud-cli
 kustomize
 argo-rollouts
 nats, bitnami
+argocd
