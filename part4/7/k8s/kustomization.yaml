@@ -1,16 +1,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
-- name: PROJECT/L_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: log-output-main-a925cbd7b54e91cd0b96d379cc3b4896ca42b227
-- name: PROJECT/P_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: ping-pong-main-a925cbd7b54e91cd0b96d379cc3b4896ca42b227
+  - name: PROJECT/L_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: log-output-main-a925cbd7b54e91cd0b96d379cc3b4896ca42b227
+  - name: PROJECT/P_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: ping-pong-main-a925cbd7b54e91cd0b96d379cc3b4896ca42b227
 resources:
-- manifests/configmap.yaml
-- manifests/ingress.yaml
-- manifests/log-output.yaml
-- manifests/ping-pong.yaml
-- manifests/postgres.yaml
-- namespaces/namespace.yaml
+  - manifests/configmap.yaml
+  - manifests/ingress.yaml
+  - manifests/log-output.yaml
+  - manifests/ping-pong.yaml
+  - manifests/postgres.yaml
+  - namespaces/namespace.yaml
