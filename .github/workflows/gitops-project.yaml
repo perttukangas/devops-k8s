@@ -57,5 +57,5 @@ jobs:
       - name: commit kustomization.yaml to GitHub
         uses: EndBug/add-and-commit@v9
         with:
-          add: './part4/8/k8s/overlays/$BUILD/kustomization.yaml'
-          message: New version released $BUILD ${{ github.sha }}
+          add: './part4/8/k8s/overlays/${{ env.BUILD }}/kustomization.yaml'
+          message: New version released ${{ env.BUILD }} ${{ github.sha }}
