@@ -12,4 +12,4 @@ resources:
   - manifests/ping-pong.yaml
   - manifests/postgres.yaml
   - namespaces/namespace.yaml
-  - secrets/secret.yaml
+  #- secrets/secret.yaml
