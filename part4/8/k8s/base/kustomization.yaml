@@ -1,16 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-images:
-  - name: PROJECT/G_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-generator-1
-  - name: PROJECT/B_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-backend-1
-  - name: PROJECT/F_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-frontend-1
-  - name: PROJECT/BC_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-backup-1
-  - name: PROJECT/BD_IMAGE
-    newName: deecaad/devopsk8s:part4-8-todo-broadcaster-1
 resources:
   - analysis/cpu-analysis.yaml
   - crons/todo-backup.yaml
