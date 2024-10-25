@@ -3,36 +3,36 @@ kind: Kustomization
 namespace: todo-namespace-prod
 
 images:
-- name: PROJECT/BC_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-backup-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
-- name: PROJECT/BD_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-broadcaster-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
-- name: PROJECT/B_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-backend-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
-- name: PROJECT/F_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-frontend-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
-- name: PROJECT/G_IMAGE
-  newName: deecaad/devopsk8s
-  newTag: todo-generator-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
+  - name: PROJECT/BC_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-backup-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
+  - name: PROJECT/BD_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-broadcaster-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
+  - name: PROJECT/B_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-backend-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
+  - name: PROJECT/F_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-frontend-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
+  - name: PROJECT/G_IMAGE
+    newName: deecaad/devopsk8s
+    newTag: todo-generator-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
 
 resources:
-- ./../../base
-- ./manifests/stuff.yaml
+  - ./../../base
+  - ./manifests/stuff.yaml
 
 patches:
-- path: ./manifests/todo-frontend-patch.yaml
-- path: ./manifests/todo-postgres-patch.yaml
+  - path: ./manifests/todo-frontend-patch.yaml
+  - path: ./manifests/todo-postgres-patch.yaml
 
 patchesJson6902:
-- patch: |-
-    - op: replace
-      path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
-      value: todo-namespace-prod-prefix-strip@kubernetescrd
-  target:
-    kind: Ingress
-    name: todo-ingress
-    version: v1
+  - patch: |-
+      - op: replace
+        path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
+        value: todo-namespace-prod-prefix-strip@kubernetescrd
+    target:
+      kind: Ingress
+      name: todo-ingress
+      version: v1
