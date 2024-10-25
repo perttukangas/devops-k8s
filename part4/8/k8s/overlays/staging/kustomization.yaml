@@ -21,7 +21,10 @@ images:
 
 resources:
   - ./../../base
-  - ./manifests/configmap.yaml
+  - ./manifests/stuff.yaml
+
+patches:
+  - path: ./manifests/todo-frontend-patch.yaml
 
 patchesJson6902:
   - patch: |-
@@ -31,20 +34,4 @@ patchesJson6902:
     target:
       kind: Ingress
       name: todo-ingress
-      version: v1
-  - patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: todo-frontend-storage-staging
-    target:
-      kind: PersistentVolume
-      name: todo-frontend-pv
-      version: v1
-  - patch: |-
-      - op: replace
-        path: /spec/storageClassName
-        value: todo-frontend-storage-staging
-    target:
-      kind: PersistentVolumeClaim
-      name: todo-frontend-pvc
       version: v1

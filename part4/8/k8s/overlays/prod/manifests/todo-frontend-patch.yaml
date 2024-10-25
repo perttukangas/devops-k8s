@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  namespace: todo-namespace
+  name: todo-frontend
+spec:
+  template:
+    spec:
+      volumes:
+        - name: shared-files
+          persistentVolumeClaim:
+            claimName: todo-frontend-pvc-prod
+      containers:
+        - name: todo-frontend
+          image: PROJECT/F_IMAGE
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '100m'
+          volumeMounts:
+            - name: shared-files
+              mountPath: /usr/src/app/dist/images
