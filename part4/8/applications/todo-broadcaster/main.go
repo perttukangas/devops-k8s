@@ -32,9 +32,7 @@ func main() {
 	defer nc.Close()
 
 	_, err := nc.QueueSubscribe("todo-updates", "todo-group", func(m *nats.Msg) {
-
-		fmt.Println("Got message")
-
+		
 		webhookURL := os.Getenv("DISCORD_WEBHOOK")
 		if webhookURL == "" {
 			fmt.Println("DISCORD_WEBHOOK environment variable is not set.")
