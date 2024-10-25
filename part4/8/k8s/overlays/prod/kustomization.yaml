@@ -5,19 +5,19 @@ namespace: todo-namespace-prod
 images:
 - name: PROJECT/BC_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-backup-prod-3ddcafe36496c50a87b30a3a9ed92e68af5a6644
+  newTag: todo-backup-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
 - name: PROJECT/BD_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-broadcaster-prod-3ddcafe36496c50a87b30a3a9ed92e68af5a6644
+  newTag: todo-broadcaster-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
 - name: PROJECT/B_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-backend-prod-3ddcafe36496c50a87b30a3a9ed92e68af5a6644
+  newTag: todo-backend-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
 - name: PROJECT/F_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-frontend-prod-3ddcafe36496c50a87b30a3a9ed92e68af5a6644
+  newTag: todo-frontend-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
 - name: PROJECT/G_IMAGE
   newName: deecaad/devopsk8s
-  newTag: todo-generator-prod-3ddcafe36496c50a87b30a3a9ed92e68af5a6644
+  newTag: todo-generator-prod-3d5fc612d92d48658a33b4ad811799b6d201f6d2
 
 resources:
 - ./../../base
