@@ -25,6 +25,7 @@ resources:
 
 patches:
   - path: ./manifests/todo-frontend-patch.yaml
+  - path: ./manifests/todo-postgres-patch.yaml
 
 patchesJson6902:
   - patch: |-

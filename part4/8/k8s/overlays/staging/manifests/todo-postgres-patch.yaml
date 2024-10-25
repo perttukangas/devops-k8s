@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: todo-namespace
+  name: todo-postgres
+spec:
+  template:
+    spec:
+      volumes:
+        - name: todo-postgres-vol
+          persistentVolumeClaim:
+            claimName: todo-postgres-pvc-staging

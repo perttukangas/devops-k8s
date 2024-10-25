@@ -68,16 +68,3 @@ spec:
             - name: todo-postgres-vol
               mountPath: /var/lib/postgresql/data
               subPath: postgres
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: todo-namespace
-  name: todo-postgres-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-  storageClassName: local-path
