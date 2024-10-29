@@ -1,0 +1,40 @@
+in course:
+
+helm: installing applications to k8s via charts
+
+postgresql: as db for backend
+
+kubernetes: everywhere in course
+knative: to allow serverless
+
+argo: for canary releases and gitops
+
+nats: for using pub-sub todo discord hook
+
+traefik: worked under the hood as k3s comes with it by default
+
+prometheus: for storing data
+grafana: visualize prometheus
+grafana loki: visualize logs
+
+outside:
+
+vmware
+gradle
+
+mongodb
+mariadb
+mysql
+redis
+
+spark
+akka
+
+nginx
+
+keycloak
+
+jfrog
+
+elastic
+sentry

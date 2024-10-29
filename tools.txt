@@ -10,3 +10,4 @@ argo-rollouts
 nats, bitnami
 argocd
 linkerd
+knative
