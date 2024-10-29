@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wikipedia-app
+  labels:
+    app: wikipedia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wikipedia
+  template:
+    metadata:
+      labels:
+        app: wikipedia
+    spec:
+      initContainers:
+        - name: init-wikipedia
+          image: curlimages/curl:latest
+          command: ['sh', '-c']
+          args:
+            - curl -L -o /usr/share/nginx/html/index.html https://en.wikipedia.org/wiki/Kubernetes
+          volumeMounts:
+            - name: www-data
+              mountPath: /usr/share/nginx/html
+        - name: sidecar-wikipedia
+          image: curlimages/curl:latest
+          restartPolicy: Always
+          command: ['sh', '-c']
+          args:
+            - |
+              while true; do
+                sleep $((RANDOM % 600 + 300));
+                curl -L -o /usr/share/nginx/html/index.html https://en.wikipedia.org/wiki/Special:Random
+              done
+          volumeMounts:
+            - name: www-data
+              mountPath: /usr/share/nginx/html
+      containers:
+        - name: nginx
+          image: nginx:latest
+          volumeMounts:
+            - name: www-data
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: www-data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wikipedia-service
+spec:
+  type: NodePort
+  selector:
+    app: wikipedia
+  ports:
+    - name: http
+      nodePort: 30082
+      protocol: TCP
+      port: 1234
+      targetPort: 80
