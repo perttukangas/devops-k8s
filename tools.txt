@@ -9,3 +9,4 @@ kustomize
 argo-rollouts
 nats, bitnami
 argocd
+linkerd

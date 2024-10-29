@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: todo-namespace
+  name: todo-generator
+spec:
+  schedule: '0 * * * *'
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            linkerd.io/inject: enabled
+        spec:
+          containers:
+            - name: todo-generator
+              image: PROJECT/G_IMAGE
+          restartPolicy: Never
