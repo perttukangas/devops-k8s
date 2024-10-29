@@ -1,0 +1,3 @@
+Controllers = watch the state of your cluster and then try to move the current state of the cluster closer to the desired state
+Kubernetes Control Plane = responsible for managing the Kubernetes cluster (etcd, kube-scheduler, kube-controller-manager, kube-apiserver, cloud-controller-manager (optional))
+
