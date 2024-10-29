@@ -1,0 +1,510 @@
+Script started on 2024-10-29 13:54:41+02:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="209" LINES="51"]
+[?2004h]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ [7mkubectl create namespace argo-rollouts && \[27m
+
+[7m  kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml[27m
+
+[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ckubectl create namespace argo-rollouts && \
+
+  kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+
+[A
+[?2004l
+namespace/argo-rollouts created
+customresourcedefinition.apiextensions.k8s.io/analysisruns.argoproj.io configured
+customresourcedefinition.apiextensions.k8s.io/analysistemplates.argoproj.io configured
+customresourcedefinition.apiextensions.k8s.io/clusteranalysistemplates.argoproj.io configured
+customresourcedefinition.apiextensions.k8s.io/experiments.argoproj.io configured
+customresourcedefinition.apiextensions.k8s.io/rollouts.argoproj.io configured
+serviceaccount/argo-rollouts created
+clusterrole.rbac.authorization.k8s.io/argo-rollouts unchanged
+clusterrole.rbac.authorization.k8s.io/argo-rollouts-aggregate-to-admin unchanged
+clusterrole.rbac.authorization.k8s.io/argo-rollouts-aggregate-to-edit unchanged
+clusterrole.rbac.authorization.k8s.io/argo-rollouts-aggregate-to-view unchanged
+clusterrolebinding.rbac.authorization.k8s.io/argo-rollouts unchanged
+configmap/argo-rollouts-config created
+secret/argo-rollouts-notification-secret created
+service/argo-rollouts-metrics created
+deployment.apps/argo-rollouts created
+[?2004h]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ [7mkubectl apply -f - <<EOF[27m
+
+[7mapiVersion: v1[27m
+
+[7mkind: ConfigMap[27m
+
+[7mmetadata:[27m
+
+[7m  name: argo-rollouts-config # must be so name[27m
+
+[7m  namespace: argo-rollouts # must be in this namespace[27m
+
+[7mdata:[27m
+
+[7m  trafficRouterPlugins: |-[27m
+
+[7m    - name: "argoproj-labs/gatewayAPI"[27m
+
+[7m      location: "https://github.com/argoproj-labs/rollouts-plugin-trafficrouter-gatewayapi/releases/download/v0.0.0-rc1/gateway-api-plugin-linux-amd64"[27m
+
+[7m---[27m
+
+[7mapiVersion: rbac.authorization.k8s.io/v1[27m
+
+[7mkind: ClusterRole[27m
+
+[7mmetadata:[27m
+
+[7m  name: argo-controller-role[27m
+
+[7m  namespace: argo-rollouts[27m
+
+[7mrules:[27m
+
+[7m  - apiGroups:[27m
+
+[7m      - gateway.networking.k8s.io[27m
+
+[7m    resources:[27m
+
+[7m      - httproutes[27m
+
+[7m    verbs:[27m
+
+[7m      - "*"[27m
+
+[7m---[27m
+
+[7mapiVersion: rbac.authorization.k8s.io/v1[27m
+
+[7mkind: ClusterRoleBinding[27m
+
+[7mmetadata:[27m
+
+[7m  name: argo-controller[27m
+
+[7mroleRef:[27m
+
+[7m  apiGroup: rbac.authorization.k8s.io[27m
+
+[7m  kind: ClusterRole[27m
+
+[7m  name: argo-controller-role[27m
+
+[7msubjects:[27m
+
+[7m  - namespace: argo-rollouts[27m
+
+[7m    kind: ServiceAccount[27m
+
+[7m    name: argo-rollouts[27m
+
+[7mEOF[27m
+
+[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ckubectl apply -f - <<EOF
+
+apiVersion: v1
+
+kind: ConfigMap
+
+metadata:
+
+  name: argo-rollouts-config # must be so name
+
+  namespace: argo-rollouts # must be in this namespace
+
+data:
+
+  trafficRouterPlugins: |-
+
+    - name: "argoproj-labs/gatewayAPI"
+
+      location: "https://github.com/argoproj-labs/rollouts-plugin-trafficrouter-gatewayapi/releases/download/v0.0.0-rc1/gateway-api-plugin-linux-amd64"
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: ClusterRole
+
+metadata:
+
+  name: argo-controller-role
+
+  namespace: argo-rollouts
+
+rules:
+
+  - apiGroups:
+
+      - gateway.networking.k8s.io
+
+    resources:
+
+      - httproutes
+
+    verbs:
+
+      - "*"
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+
+kind: ClusterRoleBinding
+
+metadata:
+
+  name: argo-controller
+
+roleRef:
+
+  apiGroup: rbac.authorization.k8s.io
+
+  kind: ClusterRole
+
+  name: argo-controller-role
+
+subjects:
+
+  - namespace: argo-rollouts
+
+    kind: ServiceAccount
+
+    name: argo-rollouts
+
+EOF
+
+[A
+[?2004l
+configmap/argo-rollouts-config configured
+clusterrole.rbac.authorization.k8s.io/argo-controller-role unchanged
+clusterrolebinding.rbac.authorization.k8s.io/argo-controller unchanged
+[?2004h]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ 
+[K]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ [7mkubectl create ns test && \[27m
+
+[7m  kubectl apply -f https://run.linkerd.io/flagger.yml[27m
+
+[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ckubectl create ns test && \
+
+  kubectl apply -f https://run.linkerd.io/flagger.yml
+
+[A
+[?2004l
+namespace/test created
+deployment.apps/load created
+configmap/frontend created
+deployment.apps/frontend created
+service/frontend created
+deployment.apps/podinfo created
+service/podinfo created
+[?2004h]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ kubectl apply -f - <<EOF
+
+apiVersion: gateway.networking.k8s.io/v1beta1
+
+kind: HTTPRoute
+
+metadata:
+
+  name: argo-rollouts-http-route
+
+  namespace: test
+
+spec:
+
+  parentRefs:
+
+    - name: podinfo
+
+      namespace: test
+
+      kind: Service
+
+      group: core
+
+      port: 9898
+
+  rules:
+
+    - backendRefs:
+
+        - name: podinfo-stable
+
+          namespace: test
+
+          port: 9898
+
+        - name: podinfo-canary
+
+          namespace: test
+
+          port: 9898
+
+---
+
+apiVersion: v1
+
+kind: Service
+
+metadata:
+
+  name: podinfo-canary
+
+  namespace: test
+
+spec:
+
+  ports:
+
+    - port: 8989
+
+      targetPort: 8989
+
+      protocol: TCP
+
+      name: http
+
+  selector:
+
+    app: podinfo
+
+---
+
+apiVersion: v1
+
+kind: Service
+
+metadata:
+
+  name: podinfo-stable
+
+  namespace: test
+
+spec:
+
+  ports:
+    - port: 8989
+      targetPort: 8989
+      protocol: TCP
+      name: http
+  selector:
+    app: podinfo
+---
+[7mapiVersion: argoproj.io/v1alpha1[27m
+[7mkind: Rollout[27m
+[7mmetadata:[27m
+[7m  name: rollouts-demo[27m
+[7m  namespace: test[27m
+[7mspec:[27m
+[7m  replicas: 1[27m
+[7m  strategy:[27m
+[7m    canary:[27m
+[7m      canaryService: podinfo-canary # our created canary service[27m
+[7m      stableService: podinfo-stable # our created stable service[27m
+[7m      trafficRouting:[27m
+[7m        plugins:[27m
+[7m          argoproj-labs/gatewayAPI:[27m
+[7m            httpRoute: argo-rollouts-http-route # our created httproute[27m
+[7m            namespace: test[27m
+[7m      steps:[27m
+[7m        - setWeight: 30[27m
+[7m        - pause: {}[27m
+[7m        - setWeight: 40[27m
+[7m        - pause: { duration: 10 }[27m
+[7m        - setWeight: 60[27m
+[7m        - pause: { duration: 10 }[27m
+[7m        - setWeight: 80[27m
+[7m        - pause: { duration: 10 }[27m
+[7m  revisionHistoryLimit: 2[27m
+[7m  selector:[27m
+[7m    matchLabels:[27m
+[7m      app: podinfo[27m
+[7m  template:[27m
+[7m    metadata:[27m
+[7m      labels:[27m
+[7m        app: podinfo[27m
+[7m    spec:[27m
+[7m      containers:[27m
+[7m        - name: podinfod[27m
+[7m          image: quay.io/stefanprodan/podinfo:1.7.0[27m
+[7m          ports:[27m
+[7m            - containerPort: 9898[27m
+[7m              protocol: TCP[27m
+[7mEOF[27m
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+  namespace: test
+spec:
+  replicas: 1
+  strategy:
+    canary:
+      canaryService: podinfo-canary # our created canary service
+      stableService: podinfo-stable # our created stable service
+      trafficRouting:
+        plugins:
+          argoproj-labs/gatewayAPI:
+            httpRoute: argo-rollouts-http-route # our created httproute
+            namespace: test
+      steps:
+        - setWeight: 30
+        - pause: {}
+        - setWeight: 40
+        - pause: { duration: 10 }
+        - setWeight: 60
+        - pause: { duration: 10 }
+        - setWeight: 80
+        - pause: { duration: 10 }
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: podinfo
+  template:
+    metadata:
+      labels:
+        app: podinfo
+    spec:
+      containers:
+        - name: podinfod
+          image: quay.io/stefanprodan/podinfo:1.7.0
+          ports:
+            - containerPort: 9898
+              protocol: TCP
+EOF
+
+[?2004l
+httproute.gateway.networking.k8s.io/argo-rollouts-http-route created
+service/podinfo-canary created
+service/podinfo-stable created
+rollout.argoproj.io/rollouts-demo created
+[?2004h]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ [7mkubectl argo rollouts -n test set image rollouts-demo \[27m
+
+[7m  podinfod=quay.io/stefanprodan/podinfo:1.7.1[27m
+
+[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ckubectl argo rollouts -n test set image rollouts-demo \
+
+  podinfod=quay.io/stefanprodan/podinfo:1.7.1
+
+[A
+[?2004l
+rollout "rollouts-demo" image updated
+[?2004h]0;perttuka@lx1-fuxi224: ~/VisualStudioCodeProjects/devops-k8s/part5[01;32mperttuka@lx1-fuxi224[00m:[01;34m~/VisualStudioCodeProjects/devops-k8s/part5[00m$ [7mkubectl argo rollouts -n test get rollout rollouts-demo --watch[27m
+
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ckubectl argo rollouts -n test get rollout rollouts-demo --watch
+
+[A
+[?2004l
+[H[2J[0;0HName:            rollouts-demo
+Namespace:       test
+Status:          [94m◌[0m Progressing
+Message:         more replicas need to be updated
+Strategy:        Canary
+  Step:          0/8
+  SetWeight:     30
+  ActualWeight:  0
+Replicas:
+  Desired:       1
+  Current:       0
+  Updated:       0
+  Ready:         0
+  Available:     0
+
+NAME                              KIND        STATUS         AGE  INFO
+⟳ rollouts-demo                   Rollout     [94m◌[0m Progressing  10s  
+├──# revision:2                                                   
+│  └──⧉ [33mrollouts-demo-bbb7fc9db[0m   ReplicaSet  [0m•[0m ScaledDown   2s   [33mcanary[0m
+└──# revision:1                                                   
+   └──⧉ rollouts-demo-77c4c4ccd9  ReplicaSet  [0m•[0m ScaledDown   10s  
+[H[2J[0;0HName:            rollouts-demo
+Namespace:       test
+Status:          [94m◌[0m Progressing
+Message:         more replicas need to be updated
+Strategy:        Canary
+  Step:          0/8
+  SetWeight:     30
+  ActualWeight:  0
+Replicas:
+  Desired:       1
+  Current:       0
+  Updated:       0
+  Ready:         0
+  Available:     0
+
+NAME                              KIND        STATUS         AGE  INFO
+⟳ rollouts-demo                   Rollout     [94m◌[0m Progressing  11s  
+├──# revision:2                                                   
+│  └──⧉ [33mrollouts-demo-bbb7fc9db[0m   ReplicaSet  [0m•[0m ScaledDown   3s   [33mcanary[0m
+└──# revision:1                                                   
+   └──⧉ rollouts-demo-77c4c4ccd9  ReplicaSet  [0m•[0m ScaledDown   11s  
+[H[2J[0;0HName:            rollouts-demo
+Namespace:       test
+Status:          [94m◌[0m Progressing
+Message:         more replicas need to be updated
+Strategy:        Canary
+  Step:          0/8
+  SetWeight:     30
+  ActualWeight:  0
+Replicas:
+  Desired:       1
+  Current:       0
+  Updated:       0
+  Ready:         0
+  Available:     0
+
+NAME                              KIND        STATUS         AGE  INFO
+⟳ rollouts-demo                   Rollout     [94m◌[0m Progressing  12s  
+├──# revision:2                                                   
+│  └──⧉ [33mrollouts-demo-bbb7fc9db[0m   ReplicaSet  [0m•[0m ScaledDown   4s   [33mcanary[0m
+└──# revision:1                                                   
+   └──⧉ rollouts-demo-77c4c4ccd9  ReplicaSet  [0m•[0m ScaledDown   12s  
+[H[2J[0;0HName:            rollouts-demo
+Namespace:       test
+Status:          [94m◌[0m Progressing
+Message:         more replicas need to be updated
+Strategy:        Canary
+  Step:          0/8
+  SetWeight:     30
+  ActualWeight:  0
+Replicas:
+  Desired:       1
+  Current:       0
+  Updated:       0
+  Ready:         0
+  Available:     0
+
+NAME                              KIND        STATUS         AGE  INFO
+⟳ rollouts-demo                   Rollout     [94m◌[0m Progressing  13s  
+├──# revision:2                                                   
+│  └──⧉ [33mrollouts-demo-bbb7fc9db[0m   ReplicaSet  [0m•[0m ScaledDown   5s   [33mcanary[0m
+└──# revision:1                                                   
+   └──⧉ rollouts-demo-77c4c4ccd9  ReplicaSet  [0m•[0m ScaledDown   13s  
+[H[2J[0;0HName:            rollouts-demo
+Namespace:       test
+Status:          [94m◌[0m Progressing
+Message:         more replicas need to be updated
+Strategy:        Canary
+  Step:          0/8
+  SetWeight:     30
+  ActualWeight:  0
+Replicas:
+  Desired:       1
+  Current:       0
+  Updated:       0
+  Ready:         0
+  Available:     0
+
+NAME                              KIND        STATUS         AGE  INFO
+⟳ rollouts-demo                   Rollout     [94m◌[0m Progressing  14s  
+├──# revision:2                                                   
+│  └──⧉ [33mrollouts-demo-bbb7fc9db[0m   ReplicaSet  [0m•[0m ScaledDown   6s   [33mcanary[0m
+└──# revision:1                                                   
+   └──⧉ rollouts-demo-77c4c4ccd9  ReplicaSet  [0m•[0m ScaledDown   14s  
+[H[2J[0;0HName:            rollouts-demo
+Na
